@@ -1,12 +1,12 @@
 package mediadevicesstate
 
 // IsCameraOn returns true is any camera in the system is ON
-func IsCameraOnWindows(logging bool) (bool, error) {
+func IsCameraOn(logging bool) (bool, error) {
 	return false, nil
 }
 
 // IsMicrophoneOn returns true is any camera in the system is ON
-func IsMicrophoneOnWindows(logging bool) (bool, error) {
+func IsMicrophoneOn(logging bool) (bool, error) {
 	return false, nil
 }
 

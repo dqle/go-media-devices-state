@@ -7,12 +7,12 @@ import (
 )
 
 // IsCameraOn returns true is any camera in the system is ON
-func IsCameraOnDarwin(logging bool) (bool, error) {
+func IsCameraOn(logging bool) (bool, error) {
 	return camera.IsCameraOnDarwin(logging)
 }
 
 // IsMicrophoneOn returns true is any camera in the system is ON
-func IsMicrophoneOnDarwin(logging bool) (bool, error) {
+func IsMicrophoneOn(logging bool) (bool, error) {
 	return microphone.IsMicrophoneOnDarwin(logging)
 }
 
