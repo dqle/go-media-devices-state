@@ -1,4 +1,4 @@
-package microphone
+package camera
 
 import (
 	"golang.org/x/sys/windows/registry"
@@ -6,8 +6,8 @@ import (
 	"github.com/dqle/go-media-devices-state/pkg/common"
 )
 
-func IsMicrophoneOnWindows() (bool, error) {
-	keyPath := `Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone\NonPackaged`
+func IsCameraOnWindows() (bool, error) {
+	keyPath := `Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam\NonPackaged`
 	currentUser := registry.CURRENT_USER
 
 	currentUserSubKeyList, err := common.GetDeviceSubKey(keyPath, currentUser)

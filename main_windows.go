@@ -1,17 +1,18 @@
 package mediadevicesstate
 
 import (
+	"github.com/dqle/go-media-devices-state/pkg/camera"
 	"github.com/dqle/go-media-devices-state/pkg/microphone"
 )
 
-// IsCameraOn returns true is any camera in the system is ON
-func IsCameraOn(logging bool) (bool, error) {
-	return false, nil
+// IsCameraOn returns true if any camera in the Windows system is ON
+func IsCameraOn() (bool, error) {
+	return camera.IsCameraOnWindows()
 }
 
-// IsMicrophoneOn returns true is any camera in the system is ON
-func IsMicrophoneOn(logging bool) (bool, error) {
-	return microphone.IsMicrophoneOnWindows(logging)
+// IsMicrophoneOn returns true if any camera in the Windows system is ON
+func IsMicrophoneOn() (bool, error) {
+	return microphone.IsMicrophoneOnWindows()
 }
 
 // Debug calls all available device functions and prints the results

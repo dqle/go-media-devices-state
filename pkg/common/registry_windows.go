@@ -6,9 +6,9 @@ import (
 	"golang.org/x/sys/windows/registry"
 )
 
-type keyList []string
+type KeyList []string
 
-func openKey(constant registry.Key, keyPath string) (registry.Key, error) {
+func OpenKey(constant registry.Key, keyPath string) (registry.Key, error) {
 	queryValue := registry.QUERY_VALUE | registry.ENUMERATE_SUB_KEYS
 
 	key, err := registry.OpenKey(constant, keyPath, uint32(queryValue))
@@ -19,8 +19,8 @@ func openKey(constant registry.Key, keyPath string) (registry.Key, error) {
 	return key, nil
 }
 
-func getMicSubKey(keyPath string, k registry.Key) (keyList, error) {
-	key, err := openKey(k, keyPath)
+func GetDeviceSubKey(keyPath string, k registry.Key) (KeyList, error) {
+	key, err := OpenKey(k, keyPath)
 	if err != nil {
 		return nil, err
 	}
@@ -31,10 +31,10 @@ func getMicSubKey(keyPath string, k registry.Key) (keyList, error) {
 		return nil, err
 	}
 
-	return keyList(joinPath(subKeys, keyPath)), nil
+	return KeyList(JoinPath(subKeys, keyPath)), nil
 }
 
-func joinPath(subKeys []string, keyPath string) []string {
+func JoinPath(subKeys []string, keyPath string) []string {
 	newSubKeyList := []string{}
 	for _, key := range subKeys {
 		newSubKeyList = append(newSubKeyList, keyPath+"\\"+key)
@@ -42,18 +42,18 @@ func joinPath(subKeys []string, keyPath string) []string {
 	return newSubKeyList
 }
 
-func getMicStatus(k registry.Key, klist keyList) (bool, error) {
+func GetDeviceStatus(k registry.Key, klist KeyList) (bool, error) {
 	for _, key := range klist {
-		micKey, err := openKey(k, key)
+		micKey, err := OpenKey(k, key)
 		if err != nil {
-			fmt.Printf("[getMicStatus][openKey][key=%s]: %v\n", key, err)
+			fmt.Printf("[GetMicOnStatus][OpenKey][key=%s]: %v\n", key, err)
 			continue
 		}
 		defer micKey.Close()
 
 		status, _, err := micKey.GetIntegerValue("LastUsedTimeStop")
 		if err != nil {
-			fmt.Printf("[getMicStatus][GetIntegerValue('LastUsedTimeStop')]: %v\n", err)
+			fmt.Printf("[GetMicOnStatus][GetIntegerValue('LastUsedTimeStop')]: %v\n", err)
 			continue
 		}
 		if status == 0 {

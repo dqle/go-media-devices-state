@@ -19,7 +19,7 @@ func DebugDarwin() {
 	fmt.Println("Debug go-media-devices-state module...")
 	fmt.Println()
 
-	isCameraOn, err := camera.IsCameraOnDarwin(true)
+	isCameraOn, err := camera.IsCameraOnDarwin()
 	fmt.Println()
 	if err != nil {
 		fmt.Println("Is camera on: ERROR:", err)
@@ -29,7 +29,7 @@ func DebugDarwin() {
 
 	fmt.Println()
 
-	isMicrophoneOn, err := microphone.IsMicrophoneOnDarwin(true)
+	isMicrophoneOn, err := microphone.IsMicrophoneOnDarwin()
 	fmt.Println()
 	if err != nil {
 		fmt.Println("isMicrophoneOn(): ERROR:", err)
