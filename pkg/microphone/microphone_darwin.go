@@ -15,8 +15,9 @@ import (
 )
 
 // IsMicrophoneOn returns true is any microphone in the system is ON
-func IsMicrophoneOn() (bool, error) {
+func IsMicrophoneOn(logging bool) (bool, error) {
 	isMicrophoneOn := C.int(0)
+	C.setAudioLogging(C.bool(logging))
 	errCode := C.IsMicrophoneOn(&isMicrophoneOn)
 
 	if errCode != common.ErrNoErr {

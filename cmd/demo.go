@@ -1,9 +1,22 @@
 package main
 
 import (
-	"github.com/dqle/go-media-devices-state-darwin/pkg/debug"
+	"log"
+
+	mediaDevices "github.com/dqle/go-media-devices-state-darwin"
 )
 
 func main() {
-	debug.Debug()
+	for {
+		isCameraOn, err := mediaDevices.IsCameraOn(false)
+		if err != nil {
+			log.Println("Error")
+		} else {
+			if isCameraOn == true {
+				log.Println("Camera is on")
+			} else {
+				log.Println("Camera is off")
+			}
+		}
+	}
 }

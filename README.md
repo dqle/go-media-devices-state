@@ -44,12 +44,12 @@ func main() {
 
 ```go
 // IsCameraOn returns true is any camera in the system is ON
-func IsCameraOn() (bool, error)
+func IsCameraOn(logging bool) (bool, error)
 
 // IsMicrophoneOn returns true is any microphone in the system is ON
-func IsMicrophoneOn() (bool, error)
+func IsMicrophoneOn(logging bool) (bool, error)
 
-// Debug calls all available device functions and prints the results
+// Debug calls all available device functions and prints the results with logging enabled
 func Debug()
 ```
 

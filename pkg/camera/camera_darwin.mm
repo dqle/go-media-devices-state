@@ -7,6 +7,13 @@ const int VD_ERR_NO_ERR = 0;
 const int VD_ERR_OUT_OF_MEMORY = 1;
 const int VD_ERR_ALL_DEVICES_FAILED = 2;
 
+// Set logging
+bool enableCameraLogging = false;
+
+void setCameraLogging(bool logging) {
+    enableCameraLogging = logging;
+}
+
 bool isIgnoredDeviceUID(NSString *uid) {
   // OBS virtual device always returns "is used" even when OBS is not running
   if ([uid isEqual:@"obs-virtual-cam-device"]) {
@@ -26,7 +33,9 @@ OSStatus getVideoDevicesCount(int *count) {
   err = CMIOObjectGetPropertyDataSize(kCMIOObjectSystemObject, &prop, 0, nil,
                                       &dataSize);
   if (err != kCMIOHardwareNoError) {
-    NSLog(@"getVideoDevicesCount(): error: %d", err);
+    if (enableCameraLogging) {
+      NSLog(@"getVideoDevicesCount(): error: %d", err);
+    }
     return err;
   }
 
@@ -47,14 +56,18 @@ OSStatus getVideoDevices(int count, CMIODeviceID *devices) {
   err = CMIOObjectGetPropertyDataSize(kCMIOObjectSystemObject, &prop, 0, nil,
                                       &dataSize);
   if (err != kCMIOHardwareNoError) {
-    NSLog(@"getVideoDevices(): get data size error: %d", err);
+    if (enableCameraLogging) {
+      NSLog(@"getVideoDevices(): get data size error: %d", err);
+    }
     return err;
   }
 
   err = CMIOObjectGetPropertyData(kCMIOObjectSystemObject, &prop, 0, nil,
                                   dataSize, &dataUsed, devices);
   if (err != kCMIOHardwareNoError) {
-    NSLog(@"getVideoDevices(): get data error: %d", err);
+    if (enableCameraLogging) {
+      NSLog(@"getVideoDevices(): get data error: %d", err);
+    }
     return err;
   }
 
@@ -72,7 +85,9 @@ OSStatus getVideoDeviceUID(CMIOObjectID device, NSString **uid) {
 
   err = CMIOObjectGetPropertyDataSize(device, &prop, 0, nil, &dataSize);
   if (err != kCMIOHardwareNoError) {
-    NSLog(@"getVideoDeviceUID(): get data size error: %d", err);
+    if (enableCameraLogging) {
+      NSLog(@"getVideoDeviceUID(): get data size error: %d", err);
+    }
     return err;
   }
 
@@ -80,7 +95,9 @@ OSStatus getVideoDeviceUID(CMIOObjectID device, NSString **uid) {
   err = CMIOObjectGetPropertyData(device, &prop, 0, nil, dataSize, &dataUsed,
                                   &uidStringRef);
   if (err != kCMIOHardwareNoError) {
-    NSLog(@"getVideoDeviceUID(): get data error: %d", err);
+    if (enableCameraLogging) {
+      NSLog(@"getVideoDeviceUID(): get data error: %d", err);
+    }
     return err;
   }
 
@@ -115,14 +132,18 @@ OSStatus getVideoDeviceIsUsed(CMIOObjectID device, int *isUsed) {
 
   err = CMIOObjectGetPropertyDataSize(device, &prop, 0, nil, &dataSize);
   if (err != kCMIOHardwareNoError) {
-    NSLog(@"getVideoDeviceIsUsed(): get data size error: %d", err);
+    if (enableCameraLogging) {
+      NSLog(@"getVideoDeviceIsUsed(): get data size error: %d", err);
+    }
     return err;
   }
 
   err = CMIOObjectGetPropertyData(device, &prop, 0, nil, dataSize, &dataUsed,
                                   isUsed);
   if (err != kCMIOHardwareNoError) {
-    NSLog(@"getVideoDeviceIsUsed(): get data error: %d", err);
+    if (enableCameraLogging) {
+      NSLog(@"getVideoDeviceIsUsed(): get data error: %d", err);
+    }
     return err;
   }
 
@@ -130,35 +151,47 @@ OSStatus getVideoDeviceIsUsed(CMIOObjectID device, int *isUsed) {
 }
 
 OSStatus IsCameraOn(int *on) {
-  NSLog(@"C.IsCameraOn()");
+  if (enableCameraLogging) {
+    NSLog(@"C.IsCameraOn()");
+  }
 
   OSStatus err;
 
   int count;
   err = getVideoDevicesCount(&count);
   if (err) {
-    NSLog(@"C.IsCameraOn(): failed to get devices count, error: %d", err);
+    if (enableCameraLogging) {
+      NSLog(@"C.IsCameraOn(): failed to get devices count, error: %d", err);
+    }
     return err;
   }
 
   CMIODeviceID *devices = (CMIODeviceID *)malloc(count * sizeof(*devices));
   if (devices == NULL) {
-    NSLog(@"C.IsCameraOn(): failed to allocate memory, device count: %d",
-          count);
+    if (enableCameraLogging) {
+      NSLog(@"C.IsCameraOn(): failed to allocate memory, device count: %d",
+            count);
+    }
     return VD_ERR_OUT_OF_MEMORY;
   }
 
   err = getVideoDevices(count, devices);
   if (err) {
-    NSLog(@"C.IsCameraOn(): failed to get devices, error: %d", err);
+    if (enableCameraLogging) {
+      NSLog(@"C.IsCameraOn(): failed to get devices, error: %d", err);
+    }
     free(devices);
     devices = NULL;
     return err;
   }
 
-  NSLog(@"C.IsCameraOn(): found devices: %d", count);
+  if (enableCameraLogging) {
+    NSLog(@"C.IsCameraOn(): found devices: %d", count);
+  }
   if (count > 0) {
-    NSLog(@"C.IsCameraOn(): # | is used | description");
+    if (enableCameraLogging) {
+      NSLog(@"C.IsCameraOn(): # | is used | description");
+    }
   }
 
   int failedDeviceCount = 0;
@@ -171,8 +204,10 @@ OSStatus IsCameraOn(int *on) {
     err = getVideoDeviceUID(device, &uid);
     if (err) {
       failedDeviceCount++;
-      NSLog(@"C.IsCameraOn(): %d | -       | failed to get device UID: %d", i,
-            err);
+      if (enableCameraLogging) {
+        NSLog(@"C.IsCameraOn(): %d | -       | failed to get device UID: %d", i,
+              err);
+      }
       continue;
     }
 
@@ -185,16 +220,20 @@ OSStatus IsCameraOn(int *on) {
     err = getVideoDeviceIsUsed(device, &isDeviceUsed);
     if (err) {
       failedDeviceCount++;
-      NSLog(@"C.IsCameraOn(): %d | -       | failed to get device status: %d",
-            i, err);
+      if (enableCameraLogging) {
+        NSLog(@"C.IsCameraOn(): %d | -       | failed to get device status: %d",
+             i, err);
+      }
       continue;
     }
 
     NSString *description;
     getVideoDeviceDescription(uid, &description);
 
-    NSLog(@"C.IsCameraOn(): %d | %s     | %@", i,
-          isDeviceUsed == 0 ? "NO " : "YES", description);
+    if (enableCameraLogging) {
+      NSLog(@"C.IsCameraOn(): %d | %s     | %@", i,
+            isDeviceUsed == 0 ? "NO " : "YES", description);
+    }
 
     if (isDeviceUsed != 0) {
       *on = 1;
@@ -204,9 +243,11 @@ OSStatus IsCameraOn(int *on) {
   free(devices);
   devices = NULL;
 
-  NSLog(@"C.IsCameraOn(): failed devices: %d", failedDeviceCount);
-  NSLog(@"C.IsCameraOn(): ignored devices (always on): %d", ignoredDeviceCount);
-  NSLog(@"C.IsCameraOn(): is any camera on: %s", *on == 0 ? "NO" : "YES");
+  if (enableCameraLogging) {
+    NSLog(@"C.IsCameraOn(): failed devices: %d", failedDeviceCount);
+    NSLog(@"C.IsCameraOn(): ignored devices (always on): %d", ignoredDeviceCount);
+    NSLog(@"C.IsCameraOn(): is any camera on: %s", *on == 0 ? "NO" : "YES");
+  }
 
   if (failedDeviceCount == count) {
     return VD_ERR_ALL_DEVICES_FAILED;
