@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/dqle/go-media-devices-state-darwin/pkg/debug"
+	"github.com/dqle/go-media-devices-state/pkg/debug"
 )
 
 func main() {

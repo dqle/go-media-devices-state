@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	mediaDevices "github.com/dqle/go-media-devices-state-darwin"
+	mediaDevices "github.com/dqle/go-media-devices-state"
 )
 
 func main() {

@@ -1,9 +1,9 @@
 package mediadevicesstate
 
 import (
-	"github.com/dqle/go-media-devices-state-darwin/pkg/camera"
-	"github.com/dqle/go-media-devices-state-darwin/pkg/debug"
-	"github.com/dqle/go-media-devices-state-darwin/pkg/microphone"
+	"github.com/dqle/go-media-devices-state/pkg/camera"
+	"github.com/dqle/go-media-devices-state/pkg/debug"
+	"github.com/dqle/go-media-devices-state/pkg/microphone"
 )
 
 // IsCameraOn returns true is any camera in the system is ON

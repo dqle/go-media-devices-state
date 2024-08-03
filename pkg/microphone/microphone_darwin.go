@@ -11,7 +11,7 @@ import "C"
 import (
 	"fmt"
 
-	"github.com/dqle/go-media-devices-state-darwin/pkg/common"
+	"github.com/dqle/go-media-devices-state/pkg/common"
 )
 
 // IsMicrophoneOn returns true is any microphone in the system is ON
