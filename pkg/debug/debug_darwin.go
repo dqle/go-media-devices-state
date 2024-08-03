@@ -15,11 +15,11 @@ func formatBool(value bool) string {
 }
 
 // Debug calls all available device functions and prints the results
-func Debug() {
+func DebugDarwin() {
 	fmt.Println("Debug go-media-devices-state module...")
 	fmt.Println()
 
-	isCameraOn, err := camera.IsCameraOn(true)
+	isCameraOn, err := camera.IsCameraOnDarwin(true)
 	fmt.Println()
 	if err != nil {
 		fmt.Println("Is camera on: ERROR:", err)
@@ -29,7 +29,7 @@ func Debug() {
 
 	fmt.Println()
 
-	isMicrophoneOn, err := microphone.IsMicrophoneOn(true)
+	isMicrophoneOn, err := microphone.IsMicrophoneOnDarwin(true)
 	fmt.Println()
 	if err != nil {
 		fmt.Println("isMicrophoneOn(): ERROR:", err)

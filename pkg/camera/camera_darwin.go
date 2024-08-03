@@ -15,7 +15,7 @@ import (
 )
 
 // IsCameraOn returns true is any camera in the system is ON
-func IsCameraOn(logging bool) (bool, error) {
+func IsCameraOnDarwin(logging bool) (bool, error) {
 	isCameraOn := C.int(0)
 	C.setCameraLogging(C.bool(logging))
 	errCode := C.IsCameraOn(&isCameraOn)

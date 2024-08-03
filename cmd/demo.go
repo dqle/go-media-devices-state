@@ -8,7 +8,7 @@ import (
 
 func main() {
 	for {
-		isCameraOn, err := mediaDevices.IsCameraOn(false)
+		isCameraOn, err := mediaDevices.IsCameraOnDarwin(false)
 		if err != nil {
 			log.Println("Error")
 		} else {

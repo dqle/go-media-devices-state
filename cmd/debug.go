@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	debug.Debug()
+	debug.DebugDarwin()
 }

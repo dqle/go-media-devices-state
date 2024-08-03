@@ -7,16 +7,16 @@ import (
 )
 
 // IsCameraOn returns true is any camera in the system is ON
-func IsCameraOn(logging bool) (bool, error) {
-	return camera.IsCameraOn(logging)
+func IsCameraOnDarwin(logging bool) (bool, error) {
+	return camera.IsCameraOnDarwin(logging)
 }
 
 // IsMicrophoneOn returns true is any camera in the system is ON
-func IsMicrophoneOn(logging bool) (bool, error) {
-	return microphone.IsMicrophoneOn(logging)
+func IsMicrophoneOnDarwin(logging bool) (bool, error) {
+	return microphone.IsMicrophoneOnDarwin(logging)
 }
 
 // Debug calls all available device functions and prints the results
 func Debug() {
-	debug.Debug()
+	debug.DebugDarwin()
 }
