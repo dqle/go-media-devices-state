@@ -4,7 +4,7 @@ Forked from: github.com/antonfisher/go-media-devices-state
 
 Go module to get camera/microphone state -- checks if camera/microphone is ON.
 
-Module uses `cgo` to call native specific API on darwin (MacOS) platform and uses `registry` to get the microphone and webcam windows registry.
+Currently supports both macOS and Windows.
 
 
 ## Installation
@@ -42,15 +42,21 @@ func main() {
 ```
 
 ## Implemented APIs
+| Platform | `IsCameraOn()` | `IsMicrophoneOn()` | `Debug()` | Details                                                               |
+|----------|:--------------:|:------------------:|-----------|-----------------------------------------------------------------------|
+| darwin   |       ☑        |         ☑          | ☑         | Using `CoreMediaIO/CMIOHardware.h` and `CoreAudio/AudioHardware.h`API |
+| linux    |       ☐        |         ☐          | ☐         |                                                                       |
+| windows  |       ☑        |         ☑          | ☐         | Using `HKCU` `Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\` Registry |                                                                      |
 
 ```go
-// IsCameraOn returns true is any camera in the system is ON
+// IsCameraOn returns true if any camera in the system is ON
 func IsCameraOn() (bool, error)
 
-// IsMicrophoneOn returns true is any microphone in the system is ON
+// IsMicrophoneOn returns true if any microphone in the system is ON
 func IsMicrophoneOn() (bool, error)
 
 // Debug calls all available device functions and prints the results with logging enabled
+// Darwin only
 func Debug()
 ```
 
@@ -59,8 +65,8 @@ func Debug()
 Demo prints out all system video devices and their states (ON/OFF):
 
 ```shell
-git clone https://github.com/dqle/go-media-devices-state-darwin.git
-cd go-media-devices-state-darwin
+git clone https://github.com/dqle/go-media-devices-state.git
+cd go-media-devices-state
 go run -a cmd/demo.go
 ```
 
